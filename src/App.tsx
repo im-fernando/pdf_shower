@@ -44,54 +44,25 @@ function App() {
   };
 
   return (
-    <div className="container" style={{ 
-        maxWidth: '800px', 
-        margin: '0 auto', 
-        padding: '20px',
-        position: 'relative',
-        backgroundColor: darkMode ? '#1e1e1e' : '#ffffff',
-        color: darkMode ? '#ffffff' : '#000000',
-        minHeight: '100vh'
-      }}>
+    <div className={`container max-w-3xl mx-auto p-5 relative ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'} min-h-screen`}>
       {/* Botão de Tema */}
       <button
         onClick={toggleTheme}
-        style={{
-          position: 'absolute',
-          top: '20px',
-          right: '20px',
-          padding: '10px',
-          borderRadius: '50%',
-          width: '40px',
-          height: '40px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: darkMode ? '#ffffff' : '#333333',
-          color: darkMode ? '#333333' : '#ffffff',
-          border: 'none',
-          cursor: 'pointer',
-          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-          zIndex: 1000
-        }}
+        className={`absolute top-5 right-5 p-2.5 rounded-full w-10 h-10 flex items-center justify-center ${
+          darkMode ? 'bg-white text-gray-800' : 'bg-gray-800 text-white'
+        } border-none cursor-pointer shadow-md z-10`}
       >
         {darkMode ? '☀️' : '🌙'}
       </button>
 
-      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Gerador de PDF</h1>
+      <h1 className="text-center mb-5 text-2xl font-bold">Gerador de PDF</h1>
       
       {!pdfGenerated ? (
-        <form onSubmit={handleSubmit} style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '15px',
-          backgroundColor: darkMode ? '#2d2d2d' : '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: darkMode ? '0 2px 10px rgba(0,0,0,0.5)' : '0 2px 5px rgba(0,0,0,0.1)'
-        }}>
+        <form onSubmit={handleSubmit} className={`flex flex-col gap-4 ${
+          darkMode ? 'bg-gray-800 shadow-lg shadow-black/50' : 'bg-gray-100 shadow shadow-black/10'
+        } p-5 rounded-lg`}>
           <div>
-            <label htmlFor="name">Nome:</label>
+            <label htmlFor="name" className="block mb-1">Nome:</label>
             <input
               type="text"
               id="name"
@@ -99,20 +70,16 @@ function App() {
               value={formData.name}
               onChange={handleChange}
               required
-              style={{ 
-                width: '100%', 
-                padding: '8px', 
-                marginTop: '5px',
-                backgroundColor: darkMode ? '#3d3d3d' : '#ffffff',
-                color: darkMode ? '#ffffff' : '#000000',
-                border: darkMode ? '1px solid #555' : '1px solid #ced4da',
-                borderRadius: '4px'
-              }}
+              className={`w-full p-2 mt-1 rounded ${
+                darkMode 
+                  ? 'bg-gray-700 text-white border border-gray-600' 
+                  : 'bg-white text-gray-900 border border-gray-300'
+              }`}
             />
           </div>
           
           <div>
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email" className="block mb-1">Email:</label>
             <input
               type="email"
               id="email"
@@ -120,64 +87,44 @@ function App() {
               value={formData.email}
               onChange={handleChange}
               required
-              style={{ 
-                width: '100%', 
-                padding: '8px', 
-                marginTop: '5px',
-                backgroundColor: darkMode ? '#3d3d3d' : '#ffffff',
-                color: darkMode ? '#ffffff' : '#000000',
-                border: darkMode ? '1px solid #555' : '1px solid #ced4da',
-                borderRadius: '4px'
-              }}
+              className={`w-full p-2 mt-1 rounded ${
+                darkMode 
+                  ? 'bg-gray-700 text-white border border-gray-600' 
+                  : 'bg-white text-gray-900 border border-gray-300'
+              }`}
             />
           </div>
           
           <div>
-            <label htmlFor="message">Mensagem:</label>
+            <label htmlFor="message" className="block mb-1">Mensagem:</label>
             <textarea
               id="message"
               name="message"
               value={formData.message}
               onChange={handleChange}
               rows={4}
-              style={{ 
-                width: '100%', 
-                padding: '8px', 
-                marginTop: '5px',
-                backgroundColor: darkMode ? '#3d3d3d' : '#ffffff',
-                color: darkMode ? '#ffffff' : '#000000',
-                border: darkMode ? '1px solid #555' : '1px solid #ced4da',
-                borderRadius: '4px'
-              }}
+              className={`w-full p-2 mt-1 rounded ${
+                darkMode 
+                  ? 'bg-gray-700 text-white border border-gray-600' 
+                  : 'bg-white text-gray-900 border border-gray-300'
+              }`}
             />
           </div>
           
           <button 
             type="submit" 
-            style={{ 
-              padding: '10px 15px', 
-              backgroundColor: darkMode ? '#007bff' : '#4CAF50', 
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontSize: '16px'
-            }}
+            className={`py-2.5 px-4 ${
+              darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-green-600 hover:bg-green-700'
+            } text-white border-none rounded cursor-pointer text-base font-medium`}
           >
             Gerar PDF
           </button>
         </form>
       ) : (
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '20px',
-          backgroundColor: darkMode ? '#2d2d2d' : '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: darkMode ? '0 2px 10px rgba(0,0,0,0.5)' : '0 2px 5px rgba(0,0,0,0.1)'
-        }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div className={`flex flex-col gap-5 ${
+          darkMode ? 'bg-gray-800 shadow-lg shadow-black/50' : 'bg-gray-100 shadow shadow-black/10'
+        } p-5 rounded-lg`}>
+          <div className="flex justify-between">
             <button 
               onClick={() => {
                 setPdfGenerated(false);
@@ -186,14 +133,7 @@ function App() {
                   setPdfUrl(null);
                 }
               }}
-              style={{ 
-                padding: '10px 15px', 
-                backgroundColor: '#f44336', 
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
+              className="py-2.5 px-4 bg-red-500 hover:bg-red-600 text-white border-none rounded cursor-pointer"
             >
               Voltar ao Formulário
             </button>
@@ -202,14 +142,7 @@ function App() {
               <a 
                 href={pdfUrl} 
                 download="formulario.pdf"
-                style={{ 
-                  padding: '10px 15px', 
-                  backgroundColor: '#2196F3', 
-                  color: 'white',
-                  textDecoration: 'none',
-                  borderRadius: '4px',
-                  display: 'inline-block'
-                }}
+                className="py-2.5 px-4 bg-blue-500 hover:bg-blue-600 text-white no-underline rounded inline-block"
               >
                 Baixar PDF
               </a>

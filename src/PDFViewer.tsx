@@ -48,109 +48,67 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, darkMode = false }) => {
   }
 
   return (
-    <div style={{ 
-      border: darkMode ? '1px solid #555' : '1px solid #ddd', 
-      borderRadius: '4px', 
-      padding: '20px',
-      backgroundColor: darkMode ? '#1e1e1e' : '#ffffff',
-      color: darkMode ? '#e0e0e0' : '#333333'
-    }}>
+    <div className={`border ${darkMode ? 'border-gray-600 bg-gray-900 text-gray-200' : 'border-gray-300 bg-white text-gray-800'} rounded p-5`}>
       {pdfUrl && (
         <>
           <Document 
             file={pdfUrl} 
             onLoadSuccess={onDocumentLoadSuccess}
           >
-            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-              <Page 
-                pageNumber={pageNumber}
-                renderTextLayer={true}
-                renderAnnotationLayer={true}
-                width={300}
-                className={darkMode ? 'dark-mode-page' : ''}
-              />
+            <div className="mb-5 flex justify-center">
+              <div className={`rounded-lg overflow-hidden ${darkMode ? 'shadow-lg shadow-black/50' : 'shadow-md shadow-black/20'}`}>
+                <Page 
+                  pageNumber={pageNumber}
+                  renderTextLayer={true}
+                  renderAnnotationLayer={true}
+                  width={300}
+                  className={darkMode ? 'dark-mode-page' : ''}
+                />
+              </div>
             </div>
           </Document>
 
           {numPages && (
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center', 
-              marginTop: '20px', 
-              gap: '10px',
-              padding: '10px',
-              backgroundColor: darkMode ? '#2d2d2d' : '#f8f9fa',
-              borderRadius: '8px',
-              boxShadow: darkMode ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'
-            }}>
+            <div className={`flex justify-center items-center mt-5 gap-2.5 p-2.5 rounded-lg ${darkMode ? 'bg-gray-800 shadow-lg shadow-black/30' : 'bg-gray-100 shadow shadow-black/10'}`}>
               <button 
                 onClick={previousPage} 
                 disabled={pageNumber <= 1}
-                style={{
-                  padding: '8px 12px', 
-                  backgroundColor: pageNumber <= 1 
-                    ? (darkMode ? '#555' : '#ccc') 
-                    : (darkMode ? '#0d6efd' : '#2196F3'), 
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: pageNumber <= 1 ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontWeight: 'bold'
-                }}
+                className={`px-3 py-2 rounded flex items-center font-bold text-white ${
+                  pageNumber <= 1 
+                    ? (darkMode ? 'bg-gray-600 cursor-not-allowed' : 'bg-gray-400 cursor-not-allowed') 
+                    : (darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600')
+                }`}
               >
-                <span style={{ fontSize: '18px', marginRight: '5px' }}>&laquo;</span> Anterior
+                <span className="text-lg mr-1">&laquo;</span> Anterior
               </button>
               
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '5px',
-                padding: '0 15px',
-                borderLeft: darkMode ? '1px solid #555' : '1px solid #ddd',
-                borderRight: darkMode ? '1px solid #555' : '1px solid #ddd'
-              }}>
-                <p style={{ margin: 0, fontWeight: 'bold' }}>Página</p>
+              <div className={`flex items-center gap-1.5 px-4 ${darkMode ? 'border-l border-r border-gray-600' : 'border-l border-r border-gray-300'}`}>
+                <p className="m-0 font-bold">Página</p>
                 <input
                   type="text"
                   value={inputPage}
                   onChange={(e) => setInputPage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && goToPage()}
                   onBlur={goToPage}
-                  style={{
-                    width: '40px',
-                    padding: '4px',
-                    textAlign: 'center',
-                    backgroundColor: darkMode ? '#3d3d3d' : '#fff',
-                    color: darkMode ? '#e0e0e0' : '#333',
-                    border: darkMode ? '1px solid #555' : '1px solid #ccc',
-                    borderRadius: '4px',
-                    fontWeight: 'bold'
-                  }}
+                  className={`w-10 p-1 text-center font-bold rounded ${
+                    darkMode 
+                      ? 'bg-gray-700 text-gray-200 border border-gray-600' 
+                      : 'bg-white text-gray-800 border border-gray-300'
+                  }`}
                 />
-                <p style={{ margin: 0, fontWeight: 'bold' }}>de <span>{numPages}</span></p>
+                <p className="m-0 font-bold">de <span>{numPages}</span></p>
               </div>
               
               <button 
                 onClick={nextPage} 
                 disabled={pageNumber >= numPages}
-                style={{
-                  padding: '8px 12px', 
-                  backgroundColor: pageNumber >= numPages 
-                    ? (darkMode ? '#555' : '#ccc') 
-                    : (darkMode ? '#0d6efd' : '#2196F3'),  
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '4px',
-                  cursor: pageNumber >= numPages ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  fontWeight: 'bold'
-                }}
+                className={`px-3 py-2 rounded flex items-center font-bold text-white ${
+                  pageNumber >= numPages 
+                    ? (darkMode ? 'bg-gray-600 cursor-not-allowed' : 'bg-gray-400 cursor-not-allowed') 
+                    : (darkMode ? 'bg-blue-600 hover:bg-blue-700' : 'bg-blue-500 hover:bg-blue-600')
+                }`}
               >
-                Próxima <span style={{ fontSize: '18px', marginLeft: '5px' }}>&raquo;</span>
+                Próxima <span className="text-lg ml-1">&raquo;</span>
               </button>
             </div>
           )}
