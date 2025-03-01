@@ -8,9 +8,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.js';
 
 interface PDFViewerProps {
   pdfUrl: string | null;
+  darkMode?: boolean;
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
+const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl, darkMode = false }) => {
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [inputPage, setInputPage] = useState<string>('1');
@@ -25,6 +26,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
     const newPageNumber = pageNumber + offset;
     if (newPageNumber >= 1 && newPageNumber <= (numPages || 1)) {
       setPageNumber(newPageNumber);
+      setInputPage(newPageNumber.toString());
     }
   }
 
@@ -46,7 +48,13 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
   }
 
   return (
-    <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '20px' }}>
+    <div style={{ 
+      border: darkMode ? '1px solid #555' : '1px solid #ddd', 
+      borderRadius: '4px', 
+      padding: '20px',
+      backgroundColor: darkMode ? '#1e1e1e' : '#ffffff',
+      color: darkMode ? '#e0e0e0' : '#333333'
+    }}>
       {pdfUrl && (
         <>
           <Document 
@@ -59,6 +67,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
                 renderTextLayer={true}
                 renderAnnotationLayer={true}
                 width={300}
+                className={darkMode ? 'dark-mode-page' : ''}
               />
             </div>
           </Document>
@@ -71,16 +80,18 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
               marginTop: '20px', 
               gap: '10px',
               padding: '10px',
-              backgroundColor: '#f8f9fa',
+              backgroundColor: darkMode ? '#2d2d2d' : '#f8f9fa',
               borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              boxShadow: darkMode ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'
             }}>
               <button 
                 onClick={previousPage} 
                 disabled={pageNumber <= 1}
                 style={{
                   padding: '8px 12px', 
-                  backgroundColor: pageNumber <= 1 ? '#ccc' : '#2196F3', 
+                  backgroundColor: pageNumber <= 1 
+                    ? (darkMode ? '#555' : '#ccc') 
+                    : (darkMode ? '#0d6efd' : '#2196F3'), 
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',
@@ -98,8 +109,8 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
                 alignItems: 'center', 
                 gap: '5px',
                 padding: '0 15px',
-                borderLeft: '1px solid #ddd',
-                borderRight: '1px solid #ddd'
+                borderLeft: darkMode ? '1px solid #555' : '1px solid #ddd',
+                borderRight: darkMode ? '1px solid #555' : '1px solid #ddd'
               }}>
                 <p style={{ margin: 0, fontWeight: 'bold' }}>Página</p>
                 <input
@@ -112,7 +123,9 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
                     width: '40px',
                     padding: '4px',
                     textAlign: 'center',
-                    border: '1px solid #ccc',
+                    backgroundColor: darkMode ? '#3d3d3d' : '#fff',
+                    color: darkMode ? '#e0e0e0' : '#333',
+                    border: darkMode ? '1px solid #555' : '1px solid #ccc',
                     borderRadius: '4px',
                     fontWeight: 'bold'
                   }}
@@ -125,7 +138,9 @@ const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
                 disabled={pageNumber >= numPages}
                 style={{
                   padding: '8px 12px', 
-                  backgroundColor: pageNumber >= numPages ? '#ccc' : '#2196F3', 
+                  backgroundColor: pageNumber >= numPages 
+                    ? (darkMode ? '#555' : '#ccc') 
+                    : (darkMode ? '#0d6efd' : '#2196F3'),  
                   color: 'white',
                   border: 'none',
                   borderRadius: '4px',

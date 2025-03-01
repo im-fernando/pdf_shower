@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 import { pdf } from '@react-pdf/renderer';
 import PDFDocument, { FormData } from './PDFDocument';
 import PDFViewer from './PDFViewer';
@@ -11,6 +11,18 @@ function App() {
   });
   const [pdfGenerated, setPdfGenerated] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Aplicar tema quando mudar
+  useEffect(() => {
+    if (darkMode) {
+      document.body.style.backgroundColor = '#121212';
+      document.body.style.color = '#ffffff';
+    } else {
+      document.body.style.backgroundColor = '#ffffff';
+      document.body.style.color = '#000000';
+    }
+  }, [darkMode]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -27,12 +39,57 @@ function App() {
     setPdfGenerated(true);
   };
 
+  const toggleTheme = () => {
+    setDarkMode(prev => !prev);
+  };
+
   return (
-    <div className="container" style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+    <div className="container" style={{ 
+        maxWidth: '800px', 
+        margin: '0 auto', 
+        padding: '20px',
+        position: 'relative',
+        backgroundColor: darkMode ? '#1e1e1e' : '#ffffff',
+        color: darkMode ? '#ffffff' : '#000000',
+        minHeight: '100vh'
+      }}>
+      {/* Botão de Tema */}
+      <button
+        onClick={toggleTheme}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          right: '20px',
+          padding: '10px',
+          borderRadius: '50%',
+          width: '40px',
+          height: '40px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: darkMode ? '#ffffff' : '#333333',
+          color: darkMode ? '#333333' : '#ffffff',
+          border: 'none',
+          cursor: 'pointer',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+          zIndex: 1000
+        }}
+      >
+        {darkMode ? '☀️' : '🌙'}
+      </button>
+
       <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Gerador de PDF</h1>
       
       {!pdfGenerated ? (
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <form onSubmit={handleSubmit} style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '15px',
+          backgroundColor: darkMode ? '#2d2d2d' : '#f8f9fa',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: darkMode ? '0 2px 10px rgba(0,0,0,0.5)' : '0 2px 5px rgba(0,0,0,0.1)'
+        }}>
           <div>
             <label htmlFor="name">Nome:</label>
             <input
@@ -42,7 +99,15 @@ function App() {
               value={formData.name}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              style={{ 
+                width: '100%', 
+                padding: '8px', 
+                marginTop: '5px',
+                backgroundColor: darkMode ? '#3d3d3d' : '#ffffff',
+                color: darkMode ? '#ffffff' : '#000000',
+                border: darkMode ? '1px solid #555' : '1px solid #ced4da',
+                borderRadius: '4px'
+              }}
             />
           </div>
           
@@ -55,7 +120,15 @@ function App() {
               value={formData.email}
               onChange={handleChange}
               required
-              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              style={{ 
+                width: '100%', 
+                padding: '8px', 
+                marginTop: '5px',
+                backgroundColor: darkMode ? '#3d3d3d' : '#ffffff',
+                color: darkMode ? '#ffffff' : '#000000',
+                border: darkMode ? '1px solid #555' : '1px solid #ced4da',
+                borderRadius: '4px'
+              }}
             />
           </div>
           
@@ -67,7 +140,15 @@ function App() {
               value={formData.message}
               onChange={handleChange}
               rows={4}
-              style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+              style={{ 
+                width: '100%', 
+                padding: '8px', 
+                marginTop: '5px',
+                backgroundColor: darkMode ? '#3d3d3d' : '#ffffff',
+                color: darkMode ? '#ffffff' : '#000000',
+                border: darkMode ? '1px solid #555' : '1px solid #ced4da',
+                borderRadius: '4px'
+              }}
             />
           </div>
           
@@ -75,7 +156,7 @@ function App() {
             type="submit" 
             style={{ 
               padding: '10px 15px', 
-              backgroundColor: '#4CAF50', 
+              backgroundColor: darkMode ? '#007bff' : '#4CAF50', 
               color: 'white',
               border: 'none',
               borderRadius: '4px',
@@ -87,7 +168,15 @@ function App() {
           </button>
         </form>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '20px',
+          backgroundColor: darkMode ? '#2d2d2d' : '#f8f9fa',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: darkMode ? '0 2px 10px rgba(0,0,0,0.5)' : '0 2px 5px rgba(0,0,0,0.1)'
+        }}>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <button 
               onClick={() => {
@@ -127,7 +216,7 @@ function App() {
             )}
           </div>
           
-          <PDFViewer pdfUrl={pdfUrl} />
+          <PDFViewer pdfUrl={pdfUrl} darkMode={darkMode} />
         </div>
       )}
     </div>
